@@ -48,7 +48,7 @@ class Main
     @points += y.values[0]
   end  
   def self.final(player,casino)
-    if ((player.points == 21) && (casino.points == 21)) || ((player.points < 21) && (casino.points < 21) && (player.points < casino.points)) || (player.points > 21)
+    if ((player.points == 21) && (casino.points == 21)) || ((player.points < 21) && ((casino.points < 21) || (casino.points == 21)) && (player.points < casino.points)) || (player.points > 21)
       sleep 0.3
       casino.win
     else 
