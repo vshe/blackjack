@@ -1,11 +1,15 @@
 require_relative "main"
+
 class Casino < Main
+
   def initialize(name)
+    @name = name 
     @walet = 1000
     @hand = []
     @points = 0
     @wins = 0
   end
+
   def game
     self.take_card
     self.take_card
@@ -25,5 +29,6 @@ class Casino < Main
       puts "СГОРЕЛ"
     end
   end
+  
 end
 

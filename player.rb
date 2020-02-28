@@ -1,12 +1,15 @@
 require_relative "main"
+
 class Player < Main
-  def initialize (name)
+
+  def initialize(name)
     @name = name 
     @walet = 100
     @hand = []
     @points = 0
     @wins = 0
   end
+
   def game
     self.take_card
     self.take_card
@@ -34,4 +37,5 @@ class Player < Main
       puts "СГОРЕЛ"
     end
   end
+
 end
