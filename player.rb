@@ -4,10 +4,22 @@ class Player < Main
 
   def initialize(name)
     @name = name 
-    @walet = 100
+    @walet = 0
     @hand = []
     @points = 0
     @wins = 0
+  end
+
+  def bet(money)
+    @walet -= money
+    sleep 0.3
+    puts "Ваша ставка: #{money}"
+    @@bank += money
+  end
+
+  def add_money(count)
+    @walet += count
+    puts "Баланс: #{@walet}$"
   end
 
   def game
@@ -17,7 +29,7 @@ class Player < Main
     loop do
       if @points < 21
         sleep 0.3
-        puts "еще карту? Y|N"
+        print "еще карту? Y|N"
         input = gets.chomp.upcase
         if input == "Y"
           self.take_card

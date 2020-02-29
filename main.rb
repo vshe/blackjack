@@ -12,14 +12,7 @@ class Main
     sleep 0.3
     puts "------- Игра номер #{@@games} -------"
   end
-
-  def bet(money)
-    @walet -= money
-    sleep 0.3
-    puts "#{self.name}: ставка #{money}"
-    @@bank += money
-  end
-
+  
   def win
     @wins += 1
     @walet += @@bank

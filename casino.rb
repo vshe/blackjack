@@ -10,6 +10,13 @@ class Casino < Main
     @wins = 0
   end
 
+  def bet(money)
+    @walet -= money
+    sleep 0.3
+    puts "#{self.name}: ставка #{money}"
+    @@bank += money
+  end
+
   def game
     self.take_card
     self.take_card
@@ -31,4 +38,5 @@ class Casino < Main
   end
   
 end
+
 
