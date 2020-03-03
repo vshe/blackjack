@@ -1,20 +1,29 @@
 require_relative "main"
 
+
 class Casino < Main
 
   def initialize(name)
     @name = name 
-    @walet = 1000
+    @walet = 0
     @hand = []
     @points = 0
     @wins = 0
   end
 
   def bet(money)
-    @walet -= money
-    sleep 0.3
-    puts "#{self.name}: ставка #{money}"
-    @@bank += money
+    if money <= @walet
+      @walet -= money
+      sleep 0.3
+      puts "#{self.name}: ставка #{money}"
+      @@bank += money
+    else 
+      puts "Казино идет вабанк"
+      casino.bet(@walet)
+    end
+    View.bank_top
+    puts @@bank
+    View.bank_bottom
   end
 
   def game

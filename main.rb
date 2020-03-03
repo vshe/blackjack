@@ -1,3 +1,5 @@
+require_relative "view"
+
 class Main
 
   attr_reader :wins, :walet, :name
@@ -7,10 +9,18 @@ class Main
   @@games = 0
   @@stack = nil
 
+  def self.command_bar
+    print "Команда >> "
+  end
+
   def self.games_count
     @@games += 1
     sleep 0.3
     puts "------- Игра номер #{@@games} -------"
+  end
+
+  def add_money(count)
+    @walet += count
   end
   
   def win
@@ -43,6 +53,7 @@ class Main
 
   def take_card
     puts "#{self.name} берет карту..."
+    View.card
     y = @@stack.slice(*@@stack.keys.sample(1))
     @@stack.delete(y.keys[0])
     self.hand << y

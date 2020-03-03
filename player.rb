@@ -16,12 +16,7 @@ class Player < Main
     puts "Ваша ставка: #{money}"
     @@bank += money
   end
-
-  def add_money(count)
-    @walet += count
-    puts "Баланс: #{@walet}$"
-  end
-
+  
   def game
     self.take_card
     self.take_card
@@ -29,14 +24,14 @@ class Player < Main
     loop do
       if @points < 21
         sleep 0.3
-        print "еще карту? Y|N"
+        print "еще карту? Y|N >> "
         input = gets.chomp.upcase
         if input == "Y"
           self.take_card
           self.show_hand
         elsif (input != "N") && (input != "Y")
           sleep 0.3
-          puts "ewgoiewfhalkfnv"
+          puts "неверная команда, пожалуйста повторите"
         end
       end
     break if (input == "N") || (@points >= 21)
