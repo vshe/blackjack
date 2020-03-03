@@ -19,11 +19,8 @@ class Casino < Main
       @@bank += money
     else 
       puts "Казино идет вабанк"
-      casino.bet(@walet)
+      self.bet(@walet)
     end
-    View.bank_top
-    puts @@bank
-    View.bank_bottom
   end
 
   def game

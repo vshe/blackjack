@@ -23,6 +23,12 @@ class Main
     @walet += count
   end
   
+  def self.bank
+    View.bank_top
+    puts @@bank
+    View.bank_bottom
+  end
+  
   def win
     @wins += 1
     @walet += @@bank

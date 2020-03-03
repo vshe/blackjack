@@ -126,7 +126,7 @@ break if command == "N"
     player.bet(bet)
     sleep 0.3
     casino.bet(bet)
-
+    Main.bank
     player.game
     casino.game
     Main.final(player,casino)
