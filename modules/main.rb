@@ -1,7 +1,6 @@
-require_relative "view"
+require_relative "../interface/view"
 
 class Main
-
   attr_reader :wins, :walet, :name
   attr_accessor :hand, :points
 
@@ -16,31 +15,28 @@ class Main
   def self.games_count
     @@games += 1
     sleep 0.3
-    puts "------- Игра номер #{@@games} -------"
+    puts "------- Игра номер #{@@games} -----------"
   end
 
   def add_money(count)
     @walet += count
   end
   
-  def self.bank
-    View.bank_top
-    puts @@bank
-    View.bank_bottom
-  end
-  
   def win
     @wins += 1
     @walet += @@bank
+    @@bank = 0
     sleep 0.3
     puts "победа #{self.name}"
   end
 
-  def self.total(player,casino)
-    sleep 0.3
-    puts "счет #{player.name} #{player.wins} : #{casino.wins} #{casino.name}"
-    sleep 0.3
-    puts "ВАШ БАЛАНС: #{player.walet}"
+  def self.statistics(player,casino)  
+    puts "#{player.name}|| деньги: #{player.walet} $ || победы: #{player.wins}"
+    puts "#{casino.name}|| деньги: #{casino.walet} $ || победы: #{casino.wins}"
+    View.line
+    View.bank_top
+    puts "В БАНКЕ: #{@@bank} $"
+    View.bank_bottom
   end
 
   def show_hand

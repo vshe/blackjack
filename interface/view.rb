@@ -1,3 +1,5 @@
+#для примера эскиз карты, банка и разделительно линии
+
 class View
 
   def self.card
@@ -20,4 +22,10 @@ class View
     puts  "|____________|"
     puts  ""
   end
+
+  def self.line
+    puts "____________________________________"
+    puts ""
+  end
+
 end

@@ -1,15 +1,16 @@
-require_relative "casino"
-require_relative "player"
+require_relative "../modules/casino"
+require_relative "../modules/player"
 
 casino = Casino.new("Dealer")
 
 loop do
 
+  View.line
   puts "Играть 1"
   puts "Выход из игры 0"
   Main.command_bar
   command = gets.chomp
-  puts ""
+  View.line
   sleep 0.3
 
   loop do
@@ -26,10 +27,8 @@ loop do
 break if command == "0"
 
   if command == "1"
-
     print "Введите ваше имя: "
     name = gets.chomp
-
     loop do
       if name == nil
         puts "Нельзя оставлять поле пустым"
@@ -58,11 +57,13 @@ break if command == "0"
     player.add_money(count)
     casino.add_money(count)
     puts "Ваш баланс #{player.walet} $"
+    View.line
     sleep 0.3
 
     loop do
       print "Начать игру? Y|N >> "
       command = gets.chomp.upcase
+      View.line
       if command != "N" && command != "Y"
         sleep 0.3
         puts "неверная команда, пожалуйста повторите"
@@ -88,7 +89,10 @@ break if command == "N"
     sleep 0.3
     puts ""
     Main.clean(player,casino)
+    system ("clear")
+    View.line
     Main.games_count
+    Main.statistics(player,casino)
 
     $retry_count = 1
   
@@ -123,14 +127,25 @@ break if command == "N"
     break if bet <= player.walet
     end
 
+    system ("clear")
+    View.line
+    Main.statistics(player,casino)
     player.bet(bet)
     sleep 0.3
     casino.bet(bet)
-    Main.bank
+    sleep 0.3
+    system ("clear")
+    View.line
+    Main.statistics(player,casino)
     player.game
+    system ("clear")
+    View.line
+    Main.statistics(player,casino)
     casino.game
     Main.final(player,casino)
-    Main.total(player,casino)
+    system ("clear")
+    View.line
+    Main.statistics(player,casino)
     
   break if (player.walet <= 0) || (casino.walet <= 0)
 
@@ -147,19 +162,26 @@ break if command == "N"
   break if command == "N"
   end
 
+  system ("clear")
+  View.line
+  Main.statistics(player,casino)
+
   if command == "N"
     sleep 0.3
   elsif casino.walet <= 0
     sleep 0.3
     puts "ВЫ ПОБЕДИЛИ!!!"
+    View.line
     sleep 0.3
   else player.walet <= 0
     sleep 0.3
     puts "СПАСИБО ЗА ИГРУ, ВЫ ПРОИГРАЛИ!"
+    View.line
     sleep 0.3
   end
 
   puts "Выход в главное меню..."
+  View.line
   sleep 0.3
 
 end

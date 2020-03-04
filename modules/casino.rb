@@ -1,8 +1,7 @@
-require_relative "main"
-
+require_relative "../modules/main"
 
 class Casino < Main
-
+  
   def initialize(name)
     @name = name 
     @walet = 0

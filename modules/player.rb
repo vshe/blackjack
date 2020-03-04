@@ -1,4 +1,4 @@
-require_relative "main"
+require_relative "../modules/main"
 
 class Player < Main
 
