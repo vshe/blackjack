@@ -1,51 +1,73 @@
 require_relative "../modules/casino"
 require_relative "../modules/player"
 
-casino = Casino.new("Dealer")
+class Menu_controller
 
-loop do
-
-  View.line
-  puts "Играть 1"
-  puts "Выход из игры 0"
-  Main.command_bar
-  command = gets.chomp
-  View.line
-  sleep 0.3
-
-  loop do
+  def self.main_menu
+    Menu_controller.clean_screen
+    puts "Играть 1"
+    puts "Выход из игры 0"
+    Main.command_bar
+    command = gets.chomp
     if command != "1" && command != "0"
+      View.system
       puts "неверная команда, пожалуйста повторите"
-      Main.command_bar
-      command = gets.chomp
-      puts ""
-      sleep 0.3
+      Menu_controller.main_menu
+    elsif command == "0"
+      View.system
+      puts "Завершение игры"
+      Menu_controller.timer
+      Menu_controller.clean_screen
+      abort
+    else command == "1"
+      Player.new_player
+      Menu_controller.start_game
+      Menu_controller.game
     end
-  break if (command == "1") || (command == "0")
   end
 
-break if command == "0"
-
-  if command == "1"
-    print "Введите ваше имя: "
-    name = gets.chomp
-    loop do
-      if name == nil
-        puts "Нельзя оставлять поле пустым"
-        print "Введите ваше имя: "
-        name = gets.chomp
-      end
-    break if name != nil
+  def self.start_game
+    View.message
+    print "Начать игру? Y|N >> "
+    command = gets.chomp.upcase
+    if command != "N" && command != "Y"
+      View.system
+      puts "неверная команда, пожалуйста повторите"
+      Menu_controller.start_game
+    elsif command == "N"
+      View.system
+      puts "Выход в главное меню, пожалуйста подождите..."
+      Menu_controller.timer
+      Menu_controller.clean_screen
+      Menu_controller.main_menu
+    else command == "Y"
+      View.message
+      print "Готовим стол, тасуем карты..."
+      Menu_controller.timer
+      Menu_controller.clean_screen
     end
+  end
 
-    player = Player.new(name)
-    puts "Ваш баланс #{player.walet} $"
+  def self.timer
+    print "5 "
+      sleep 0.3
+      print "4 "
+      sleep 0.3
+      print "3 "
+      sleep 0.3
+      print "2 "
+      sleep 0.3
+      print "1 "
+      sleep 0.3
+      puts ""
+  end
 
+  def self.bet(player, casino)
     $retry_count = 1
- 
     begin
-      print "Внести сумму: "
-      count = Integer(gets.chomp)
+      View.message
+      print "Сделаейте вашу ставку: "
+      bet = Integer(gets.chomp)
     rescue ArgumentError => e
       $stderr.puts e
       $retry_count += 1
@@ -53,141 +75,70 @@ break if command == "0"
       $stderr.puts "Идиот...."
       exit 1
     end
-    
-    player.add_money(count)
-    casino.add_money(count)
-    puts "Ваш баланс #{player.walet} $"
-    View.line
-    sleep 0.3
-
-    loop do
-      print "Начать игру? Y|N >> "
-      command = gets.chomp.upcase
-      View.line
-      if command != "N" && command != "Y"
-        sleep 0.3
-        puts "неверная команда, пожалуйста повторите"
-      end
-    break if command == "Y" || command == "N"
+    if bet > player.walet
+      View.system
+      puts "Недостаточно средств"
+      Menu_controller.bet(player,casino)
+    else
+      player.bet(bet)
+      casino.bet(bet)
     end
-
   end
 
-break if command == "N"
-
-  loop do
-    puts "Готовим стол, тасуем карты..."
-    print "5 "
-    sleep 0.3
-    print "4 "
-    sleep 0.3
-    print "3 "
-    sleep 0.3
-    print "2 "
-    sleep 0.3
-    print "1 "
-    sleep 0.3
-    puts ""
-    Main.clean(player,casino)
+  def self.clean_screen
     system ("clear")
-    View.line
+  end
+
+  def self.game
+    player = Player.player
+    casino = Casino.casino
+    Main.clean(player,casino)
     Main.games_count
     Main.statistics(player,casino)
-
-    $retry_count = 1
-  
-      begin
-        print "Сделаейте вашу ставку: "
-        bet = Integer(gets.chomp)
-      rescue ArgumentError => e
-        $stderr.puts e
-        $retry_count += 1
-        retry if $retry_count <= 999
-        $stderr.puts "Идиот...."
-        exit 1
-      end
-
-    loop do
-      if bet > player.walet
-        puts "Недостаточно средств"
-
-        $retry_count = 1
-  
-        begin
-          print "Сделаейте вашу ставку: "
-          bet = Integer(gets.chomp)
-        rescue ArgumentError => e
-          $stderr.puts e
-          $retry_count += 1
-          retry if $retry_count <= 999
-          $stderr.puts "Идиот...."
-          exit 1
-        end
-      end
-    break if bet <= player.walet
-    end
-
-    system ("clear")
-    View.line
+    Menu_controller.bet(player,casino)
+    player.game(player,casino)
+    Menu_controller.clean_screen
     Main.statistics(player,casino)
-    player.bet(bet)
-    sleep 0.3
-    casino.bet(bet)
-    sleep 0.3
-    system ("clear")
-    View.line
-    Main.statistics(player,casino)
-    player.game
-    system ("clear")
-    View.line
-    Main.statistics(player,casino)
-    casino.game
+    casino.game(player,casino)
     Main.final(player,casino)
-    system ("clear")
-    View.line
-    Main.statistics(player,casino)
-    
-  break if (player.walet <= 0) || (casino.walet <= 0)
-
-    loop do
-      print "еще раз? Y|N >> "
+    if casino.walet <= 0
+      View.message
+      puts "ВЫ ПОБЕДИЛИ!!!"
+      View.system
+      puts "Выход в главное меню, пожалуйста подождите..."
+      Menu_controller.timer
+      sleep 
+      Menu_controller.clean_screen
+    elsif player.walet <= 0
+      View.message
+      puts "ВЫ ПРОИГРАЛИ!!!"
+      View.system
+      puts "Выход в главное меню, пожалуйста подождите..."
+      Menu_controller.timer
+      Menu_controller.clean_screen
+    else
+      View.message
+      print "Еще раз? (Y|N) >> "
       command = gets.chomp.upcase
-        if command != "N" && command != "Y"
-          sleep 0.3
-          puts "неверная команда, пожалуйста повторите"
-        end
-    break if command == "Y" || command == "N"
+      if command != "N" && command != "Y"
+        View.message
+        View.system
+        puts "неверная команда, пожалуйста повторите"
+        Menu_controller.timer
+      elsif command == "N"
+        View.system
+        puts "Выход в главное меню, пожалуйста подождите..."
+        Menu_controller.timer
+        Menu_controller.clean_screen
+        Menu_controller.main_menu
+      else
+        Menu_controller.clean_screen
+        Menu_controller.game
+      end
     end
-
-  break if command == "N"
   end
-
-  system ("clear")
-  View.line
-  Main.statistics(player,casino)
-
-  if command == "N"
-    sleep 0.3
-  elsif casino.walet <= 0
-    sleep 0.3
-    puts "ВЫ ПОБЕДИЛИ!!!"
-    View.line
-    sleep 0.3
-  else player.walet <= 0
-    sleep 0.3
-    puts "СПАСИБО ЗА ИГРУ, ВЫ ПРОИГРАЛИ!"
-    View.line
-    sleep 0.3
-  end
-
-  puts "Выход в главное меню..."
-  View.line
-  sleep 0.3
 
 end
 
-puts "Завершение игры"
-sleep 1
-
-
-
+Casino.new_dealer
+Menu_controller.main_menu

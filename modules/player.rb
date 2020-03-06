@@ -10,37 +10,57 @@ class Player < Main
     @wins = 0
   end
 
+  def self.new_player
+    View.system
+    print "Введите ваше имя: "
+    name = gets.chomp
+    player = Player.new(name)
+    player.add_money
+    @player = player
+  end
+
+  def self.player
+    @player
+  end
+
   def bet(money)
     @walet -= money
-    sleep 0.3
+    View.system
     puts "Ваша ставка: #{money}"
     @@bank += money
   end
   
-  def game
+  def game(player,casino)
     self.take_card
     self.take_card
-    self.show_hand
     loop do
       if @points < 21
-        sleep 0.3
+        Menu_controller.clean_screen
+        Main.statistics(player,casino)
+        View.message
         print "еще карту? Y|N >> "
         input = gets.chomp.upcase
         if input == "Y"
           self.take_card
-          self.show_hand
+          Menu_controller.clean_screen
+          Main.statistics(player,casino)
         elsif (input != "N") && (input != "Y")
-          sleep 0.3
+          View.system
           puts "неверная команда, пожалуйста повторите"
         end
       end
     break if (input == "N") || (@points >= 21)
     end
     if @points == 21
-      sleep 0.3
+      Menu_controller.clean_screen
+      Main.statistics(player,casino)
+      View.message
       puts "BLACKJACK"
     elsif @points > 21
       sleep 0.3
+      Menu_controller.clean_screen
+      Main.statistics(player,casino)
+      View.message
       puts "СГОРЕЛ"
     end
   end
