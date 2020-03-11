@@ -1,8 +1,26 @@
+# frozen_string_literal: true
+
 class View
+  def self.prepare_table
+    View.message
+    print 'Готовим стол, тасуем карты... '
+    print '5 '
+    sleep 0.3
+    print '4 '
+    sleep 0.3
+    print '3 '
+    sleep 0.3
+    print '2 '
+    sleep 0.3
+    print '1 '
+    sleep 0.3
+    puts ''
+  end
+
   def self.command_bar
     print 'Команда >> '
   end
-  
+
   def self.enter_name
     View.system
     print 'Введите ваше имя: '
@@ -39,7 +57,6 @@ class View
   end
 
   def self.main_menu
-    View.system
     puts 'Играть 1'
     puts 'Выход из игры 0'
   end
@@ -51,17 +68,39 @@ class View
 
   def self.close_game
     View.system
-    puts 'Завершение игры'
+    print 'Завершение игры '
+    print '5 '
+    sleep 0.3
+    print '4 '
+    sleep 0.3
+    print '3 '
+    sleep 0.3
+    print '2 '
+    sleep 0.3
+    print '1 '
+    sleep 0.3
+    puts ''
   end
 
   def self.start_game
     View.system
     print 'Начать игру? Y|N >> '
   end
-  
+
   def self.return_menu
     View.system
-    puts 'Выход в главное меню, пожалуйста подождите...'
+    print 'Выход в главное меню, пожалуйста подождите... '
+    print '5 '
+    sleep 0.3
+    print '4 '
+    sleep 0.3
+    print '3 '
+    sleep 0.3
+    print '2 '
+    sleep 0.3
+    print '1 '
+    sleep 0.3
+    puts ''
   end
 
   def self.next_game
@@ -94,15 +133,15 @@ class View
     sleep 0.1
     puts '|    |'
     sleep 0.1
-    puts '| BJ |'
+    puts '| ' + 'BJ' + ' |'
     sleep 0.1
     puts '|____|'
     puts ''
   end
 
   def self.bank
-    puts  ' ____________'
-    print '|____BANK____|: '
+    puts  ' ______'
+    print '|_BANK_|: '
   end
 
   def self.line
@@ -111,12 +150,10 @@ class View
   end
 
   def self.message
-    print '[:: DEALER ::] > : '
-    sleep 0.5
+    print '[:: DEALER ::]'
   end
 
   def self.system
-    print '[:: SYSTEM ::] > : '
-    sleep 0.5
+    print '[:: SYSTEM ::]'
   end
 end
